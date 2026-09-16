@@ -933,7 +933,7 @@ export function renderHtml({ ip, version }) {
             Dual-Stack Probes
           </h3>
           <p>
-            Alternate stack reachability is tested via lightweight browser requests to public endpoints (<code class="inline-code">icanhazip.com</code> and <code class="inline-code">ident.me</code>).
+            Alternate stack reachability is tested via lightweight browser requests to <code class="inline-code">icanhazip.com</code>.
           </p>
         </div>
 

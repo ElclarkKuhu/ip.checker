@@ -11,8 +11,8 @@ import {
 console.log('--- [org.elclark.id] Unit Tests: Probe Logic ---');
 
 // 1. Endpoint constants
-assert.deepEqual(IPV4_PROBE_ENDPOINTS, ['https://ipv4.icanhazip.com', 'https://v4.ident.me']);
-assert.deepEqual(IPV6_PROBE_ENDPOINTS, ['https://ipv6.icanhazip.com', 'https://v6.ident.me']);
+assert.deepEqual(IPV4_PROBE_ENDPOINTS, ['https://ipv4.icanhazip.com']);
+assert.deepEqual(IPV6_PROBE_ENDPOINTS, ['https://ipv6.icanhazip.com']);
 console.log('✔ Probe endpoints configured correctly');
 
 // 2. fetchWithTimeout tests
@@ -114,43 +114,37 @@ console.log('✔ Probe endpoints configured correctly');
 	assert.equal(callsA.length, 1);
 	assert.equal(callsA[0], 'https://ipv4.icanhazip.com');
 
-	// 3b. Primary fails, fallback succeeds
+	// 3b. Endpoint fails (network/timeout error)
 	/** @type {string[]} */
 	const callsB = [];
 	/** @param {string} url */
 	const mockFetchFallback = async (url) => {
 		callsB.push(url);
-		if (url === 'https://ipv4.icanhazip.com') {
-			throw new Error('Timeout');
-		}
-		return new Response('198.51.100.2\n', { status: 200 });
+		throw new Error('Timeout');
 	};
 	const resB = await probeIpv4(1000, mockFetchFallback);
-	assert.equal(resB, '198.51.100.2');
-	assert.equal(callsB.length, 2);
-	assert.equal(callsB[1], 'https://v4.ident.me');
+	assert.equal(resB, null, 'Should return null when endpoint fails');
+	assert.equal(callsB.length, 1);
+	assert.equal(callsB[0], 'https://ipv4.icanhazip.com');
 
-	// 3c. Primary returns invalid IP, fallback succeeds
+	// 3c. Endpoint returns invalid IP format
 	/** @type {string[]} */
 	const callsC = [];
 	/** @param {string} url */
 	const mockFetchInvalidFirst = async (url) => {
 		callsC.push(url);
-		if (url === 'https://ipv4.icanhazip.com') {
-			return new Response('<html>Error</html>', { status: 200 });
-		}
-		return new Response('198.51.100.3\n', { status: 200 });
+		return new Response('<html>Error</html>', { status: 200 });
 	};
 	const resC = await probeIpv4(1000, mockFetchInvalidFirst);
-	assert.equal(resC, '198.51.100.3');
-	assert.equal(callsC.length, 2);
+	assert.equal(resC, null, 'Should return null when response is invalid IP');
+	assert.equal(callsC.length, 1);
 
-	// 3d. Both endpoints fail
+	// 3d. Network unreachable fails
 	const mockFetchAllFail = async () => {
 		throw new Error('No route to host');
 	};
 	const resD = await probeIpv4(1000, mockFetchAllFail);
-	assert.equal(resD, null, 'Should return null when both endpoints fail');
+	assert.equal(resD, null, 'Should return null when endpoint is unreachable');
 
 	// 3e. Strict cumulative deadline
 	/** @type {string[]} */
@@ -193,38 +187,32 @@ console.log('✔ Probe endpoints configured correctly');
 	assert.equal(callsA.length, 1);
 	assert.equal(callsA[0], 'https://ipv6.icanhazip.com');
 
-	// 4b. Primary fails, fallback succeeds
+	// 4b. Endpoint fails (HTTP 503 error)
 	/** @type {string[]} */
 	const callsB = [];
 	/** @param {string} url */
 	const mockFetchFallback = async (url) => {
 		callsB.push(url);
-		if (url === 'https://ipv6.icanhazip.com') {
-			return new Response('503 Service Unavailable', { status: 503 });
-		}
-		return new Response('2001:db8::5678\n', { status: 200 });
+		return new Response('503 Service Unavailable', { status: 503 });
 	};
 	const resB = await probeIpv6(1000, mockFetchFallback);
-	assert.equal(resB, '2001:db8::5678');
-	assert.equal(callsB.length, 2);
-	assert.equal(callsB[1], 'https://v6.ident.me');
+	assert.equal(resB, null, 'Should return null when endpoint fails');
+	assert.equal(callsB.length, 1);
+	assert.equal(callsB[0], 'https://ipv6.icanhazip.com');
 
-	// 4c. Primary returns IPv4 instead of IPv6, fallback succeeds
+	// 4c. Primary returns IPv4 instead of IPv6
 	/** @type {string[]} */
 	const callsC = [];
 	/** @param {string} url */
 	const mockFetchWrongType = async (url) => {
 		callsC.push(url);
-		if (url === 'https://ipv6.icanhazip.com') {
-			return new Response('192.0.2.1', { status: 200 });
-		}
-		return new Response('2606:4700:4700::1111', { status: 200 });
+		return new Response('192.0.2.1', { status: 200 });
 	};
 	const resC = await probeIpv6(1000, mockFetchWrongType);
-	assert.equal(resC, '2606:4700:4700::1111');
-	assert.equal(callsC.length, 2);
+	assert.equal(resC, null, 'Should return null when response is not valid IPv6');
+	assert.equal(callsC.length, 1);
 
-	// 4d. Both fail
+	// 4d. Network unreachable fails
 	const mockFetchAllFail = async () => {
 		throw new Error('IPv6 network unreachable');
 	};

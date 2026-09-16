@@ -1,8 +1,8 @@
 // @ts-check
 import { isValidIpv4, isValidIpv6 } from './ip.js';
 
-export const IPV4_PROBE_ENDPOINTS = ['https://ipv4.icanhazip.com', 'https://v4.ident.me'];
-export const IPV6_PROBE_ENDPOINTS = ['https://ipv6.icanhazip.com', 'https://v6.ident.me'];
+export const IPV4_PROBE_ENDPOINTS = ['https://ipv4.icanhazip.com'];
+export const IPV6_PROBE_ENDPOINTS = ['https://ipv6.icanhazip.com'];
 
 /**
  * @typedef {Response | { ok: boolean, status?: number, text: () => Promise<string> }} ProbeResponse

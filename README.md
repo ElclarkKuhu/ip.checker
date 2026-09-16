@@ -8,7 +8,7 @@ Lightweight IP and dual-stack IPv4/IPv6 diagnostics on Cloudflare Workers.
 
 - **Edge SSR:** Connected client IP rendered directly in the initial HTML response using `CF-Connecting-IP`.
 - **CLI & Automation:** Returns clean plain-text IP for terminal clients (`curl`, `wget`, `httpie`, PowerShell `irm`, Python, etc.).
-- **Dual-Stack Reachability:** Client-side background probing for alternate stack reachability (`icanhazip.com` and `ident.me`).
+- **Dual-Stack Reachability:** Client-side background probing for alternate stack reachability (`icanhazip.com`).
 - **JSON API:** Dedicated `/api` endpoint or `?format=json` with CORS enabled (`Access-Control-Allow-Origin: *`).
 - **Stateless:** Ephemeral in-memory resolution, `Cache-Control: no-store`, zero logging, no database, no cookies, no tracking.
 

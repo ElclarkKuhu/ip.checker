@@ -142,7 +142,7 @@ console.log('--- [org.elclark.id] Server & Integration Tests ---');
 	assert.ok(html4.includes('Cache-Control: no-store'), 'Mentions Cache-Control: no-store');
 	assert.ok(html4.includes('Dual-Stack Probes'), 'Contains Dual-Stack Probes disclosure');
 	assert.ok(html4.includes('icanhazip.com'), 'Mentions icanhazip.com');
-	assert.ok(html4.includes('ident.me'), 'Mentions ident.me');
+	assert.ok(!html4.includes('ident.me'), 'Does not mention removed fallback ident.me');
 	assert.ok(html4.includes('Zero Tracking'), 'Contains Zero Tracking disclosure');
 	assert.ok(html4.includes('Disclaimer'), 'Contains Disclaimer');
 	assert.ok(html4.includes('curl org.elclark.id'), 'Contains plain curl org.elclark.id command');
