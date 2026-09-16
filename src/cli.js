@@ -1,6 +1,6 @@
 // @ts-check
 /**
- * CLI detection and format negotiation for org.elclark.id (Elclark Origin)
+ * CLI detection and format negotiation.
  */
 
 const CLI_UA_REGEX =

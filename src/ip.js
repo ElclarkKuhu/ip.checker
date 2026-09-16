@@ -1,6 +1,6 @@
 // @ts-check
 /**
- * Pure, isomorphic IP utilities for org.elclark.id.
+ * IP parsing, validation, and classification utilities.
  */
 
 /**

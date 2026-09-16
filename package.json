@@ -1,7 +1,7 @@
 {
   "name": "org.elclark.id",
   "version": "1.0.0",
-  "description": "Ultra-fast, zero-framework, privacy-first IP and dual-stack IPv4/IPv6 diagnostics on the edge — Elclark Origin",
+  "description": "IP and dual-stack IPv4/IPv6 diagnostics on Cloudflare Workers - Elclark Origin",
   "type": "module",
   "main": "src/index.js",
   "scripts": {

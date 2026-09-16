@@ -22,7 +22,7 @@ export default {
 	async fetch(request, env, ctx) {
 		const isHead = request.method === 'HEAD';
 
-		// 1. Handle CORS Preflight
+		// CORS Preflight
 		if (request.method === 'OPTIONS') {
 			return new Response(null, {
 				status: 204,
@@ -45,7 +45,7 @@ export default {
 		const { ip, version } = getClientIp(request);
 		const format = determineResponseFormat(request, url);
 
-		// 2. JSON Format (/api, ?format=json, Accept: application/json)
+		// JSON format (/api, ?format=json, or Accept: application/json)
 		if (format === 'json') {
 			const body = {
 				ip,
@@ -64,7 +64,7 @@ export default {
 			});
 		}
 
-		// 3. Plain Text Format (curl, irm PowerShell, ?format=text, Accept: text/plain)
+		// Plain text format (curl, PowerShell irm, ?format=text)
 		if (format === 'text') {
 			return new Response(isHead ? null : `${ip}\n`, {
 				status: 200,
@@ -76,7 +76,7 @@ export default {
 			});
 		}
 
-		// 4. Default: Zero-framework Web UI (HTML)
+		// Default: Web UI (HTML)
 		const html = renderHtml({ ip, version });
 		return new Response(isHead ? null : html, {
 			status: 200,

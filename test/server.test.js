@@ -132,7 +132,7 @@ console.log('--- [org.elclark.id] Server & Integration Tests ---');
 		'private, no-cache, no-store, must-revalidate'
 	);
 	const html4 = await resBrowser4.text();
-	assert.ok(html4.includes('What is my IP Address? — Elclark Origin'), 'Contains page title with Elclark Origin');
+	assert.ok(html4.includes('What is my IP Address? - Elclark Origin'), 'Contains page title with Elclark Origin');
 	assert.ok(html4.includes('https://org.elclark.id'), 'Contains canonical org.elclark.id');
 	assert.ok(html4.includes('203.0.113.99'), 'Contains connected IP in HTML');
 	assert.ok(html4.includes('status-connected'), 'IPv4 marked Connected in initial SSR HTML');
@@ -263,7 +263,7 @@ console.log('--- [org.elclark.id] Server & Integration Tests ---');
 		assert.equal(resBrowser.headers.get('content-type'), 'text/html; charset=utf-8');
 		const html = await resBrowser.text();
 		assert.ok(html.includes('203.0.113.88'));
-		assert.ok(html.includes('What is my IP Address? — Elclark Origin'));
+		assert.ok(html.includes('What is my IP Address? - Elclark Origin'));
 		console.log('✔ Live Test 3: Browser over real TCP socket receives complete HTML');
 
 		// Test live curl request without any proxy headers (verifies socket remoteAddress fallback)

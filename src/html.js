@@ -18,7 +18,7 @@ function escapeHtml(str) {
 }
 
 /**
- * Renders the standalone, zero-framework, zero-bloat HTML page for org.elclark.id (Elclark Origin).
+ * Renders the web UI HTML page.
  *
  * @param {{ ip: string, version: 'IPv4' | 'IPv6' }} clientInfo
  * @returns {string}
@@ -39,14 +39,14 @@ export function renderHtml({ ip, version }) {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>What is my IP Address? — Elclark Origin</title>
-  <meta name="description" content="Elclark Origin — Ultra-fast, lightweight, zero-logging IP and dual-stack IPv4/IPv6 diagnostics on the edge.">
-  <meta property="og:title" content="What is my IP Address? — Elclark Origin">
-  <meta property="og:description" content="Elclark Origin — Inspect your public IP address and verify IPv4 and IPv6 dual-stack reachability. Zero-logging, tracker-free.">
+  <title>What is my IP Address? - Elclark Origin</title>
+  <meta name="description" content="Elclark Origin - Lightweight IP and dual-stack IPv4/IPv6 diagnostics on the edge.">
+  <meta property="og:title" content="What is my IP Address? - Elclark Origin">
+  <meta property="og:description" content="Elclark Origin - Inspect your public IP address and verify IPv4 and IPv6 dual-stack reachability. Zero-logging, tracker-free.">
   <meta property="og:url" content="https://org.elclark.id">
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="What is my IP Address? — Elclark Origin">
-  <meta name="twitter:description" content="Elclark Origin — Inspect your public IP address and verify IPv4 and IPv6 dual-stack reachability. Zero-logging, tracker-free.">
+  <meta name="twitter:title" content="What is my IP Address? - Elclark Origin">
+  <meta name="twitter:description" content="Elclark Origin - Inspect your public IP address and verify IPv4 and IPv6 dual-stack reachability. Zero-logging, tracker-free.">
   <link rel="canonical" href="https://org.elclark.id">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌐</text></svg>">
   <style>
@@ -553,25 +553,25 @@ export function renderHtml({ ip, version }) {
       white-space: nowrap;
     }
 
-    /* Privacy & Disclosure Section */
-    .privacy-section {
+    /* Diagnostics & Notes Section */
+    .notes-section {
       margin-bottom: 2.5rem;
     }
 
-    .privacy-grid {
+    .notes-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
       gap: 1rem;
     }
 
-    .privacy-card {
+    .notes-card {
       background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: 8px;
       padding: 1.15rem;
     }
 
-    .privacy-card h3 {
+    .notes-card h3 {
       font-size: 0.95rem;
       font-weight: 650;
       margin-bottom: 0.4rem;
@@ -581,7 +581,7 @@ export function renderHtml({ ip, version }) {
       gap: 0.5rem;
     }
 
-    .privacy-card p {
+    .notes-card p {
       font-size: 0.825rem;
       color: var(--text-muted);
       line-height: 1.5;
@@ -645,7 +645,7 @@ export function renderHtml({ ip, version }) {
 
     <header>
       <h1 class="page-title">What is my IP Address?</h1>
-      <p class="page-subtitle">Elclark Origin &mdash; Lightweight, zero-logging network diagnostics running at the Cloudflare edge.</p>
+      <p class="page-subtitle">Elclark Origin - Lightweight, zero-logging network diagnostics running at the Cloudflare edge.</p>
     </header>
 
     <!-- Primary Connected IP Hero Card -->
@@ -679,7 +679,7 @@ export function renderHtml({ ip, version }) {
     <div id="dual-stack-banner" class="dual-stack-banner" role="status">
       <span id="banner-icon" class="banner-icon">&bull;</span>
       <span id="banner-text">
-        <strong>Testing Dual-Stack Reachability</strong> &mdash; Probing alternate IP stack from your browser&hellip;
+        <strong>Testing Dual-Stack Reachability</strong> - Probing alternate IP stack from your browser...
       </span>
     </div>
 
@@ -715,10 +715,6 @@ export function renderHtml({ ip, version }) {
             </div>`
 					}
         </div>
-
-        <div class="card-footer">
-          Standard 32-bit dotted-decimal address
-        </div>
       </div>
 
       <!-- IPv6 Card -->
@@ -750,10 +746,6 @@ export function renderHtml({ ip, version }) {
               <span>Testing IPv6 route&hellip;</span>
             </div>`
 					}
-        </div>
-
-        <div class="card-footer">
-          Next-gen 128-bit hexadecimal address
         </div>
       </div>
     </div>
@@ -814,13 +806,13 @@ export function renderHtml({ ip, version }) {
       </div>
     </section>
 
-    <!-- Privacy & Diagnostics Disclosure Section -->
-    <section class="privacy-section" aria-labelledby="privacy-heading">
-      <h2 id="privacy-heading" class="section-title">Privacy &amp; Diagnostics Disclosure</h2>
-      <p class="section-desc">Transparent, zero-logging network diagnostics designed with privacy first.</p>
+    <!-- Diagnostics & Notes Section -->
+    <section class="notes-section" aria-labelledby="notes-heading">
+      <h2 id="notes-heading" class="section-title">Diagnostics &amp; Notes</h2>
+      <p class="section-desc">Transparent network diagnostics running directly at the edge.</p>
 
-      <div class="privacy-grid">
-        <div class="privacy-card">
+      <div class="notes-grid">
+        <div class="notes-card">
           <h3>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
@@ -829,11 +821,11 @@ export function renderHtml({ ip, version }) {
             Zero Logging
           </h3>
           <p>
-            We do not store, record, or track IP addresses. Resolution is performed ephemerally in-memory at the edge and immediately discarded with edge caching disabled (<code class="inline-code">Cache-Control: no-store</code>).
+            No stored or logged IP addresses. Resolution is performed in-memory at the edge with caching disabled (<code class="inline-code">Cache-Control: no-store</code>).
           </p>
         </div>
 
-        <div class="privacy-card">
+        <div class="notes-card">
           <h3>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <circle cx="12" cy="12" r="10" />
@@ -843,11 +835,11 @@ export function renderHtml({ ip, version }) {
             Dual-Stack Probes
           </h3>
           <p>
-            Testing alternate stack reachability is performed via ephemeral client-side queries to public network endpoints (<code class="inline-code">icanhazip.com</code> operated by Cloudflare, and <code class="inline-code">ident.me</code>).
+            Alternate stack reachability is tested via lightweight browser requests to public endpoints (<code class="inline-code">icanhazip.com</code> and <code class="inline-code">ident.me</code>).
           </p>
         </div>
 
-        <div class="privacy-card">
+        <div class="notes-card">
           <h3>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
@@ -855,10 +847,10 @@ export function renderHtml({ ip, version }) {
             </svg>
             Zero Tracking
           </h3>
-          <p>Zero analytics scripts, zero cookies, zero external trackers, and zero user fingerprinting.</p>
+          <p>Zero analytics scripts, zero cookies, and zero user tracking.</p>
         </div>
 
-        <div class="privacy-card">
+        <div class="notes-card">
           <h3>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <circle cx="12" cy="12" r="10" />
@@ -874,7 +866,7 @@ export function renderHtml({ ip, version }) {
   </div>
 
   <footer>
-    <p>Elclark Origin &bull; Crafted by <a href="https://elclark.id">Elclark Kuhu</a> &bull; Powered by Cloudflare Edge &bull; <a href="#privacy-heading">Privacy &amp; Diagnostics</a></p>
+    <p>Elclark Origin &middot; by <a href="https://elclark.id">Elclark Kuhu</a> &middot; Powered by Cloudflare Edge &middot; <a href="#notes-heading">Diagnostics &amp; Notes</a></p>
   </footer>
 
   <script>
@@ -957,27 +949,27 @@ export function renderHtml({ ip, version }) {
         if (v4Ok && v6Ok) {
           banner.className = 'dual-stack-banner active';
           bannerIcon.textContent = '✓';
-          bannerText.innerHTML = '<strong>Dual-Stack Network Detected</strong> &mdash; Your device has working public connectivity over both IPv4 and IPv6.';
+          bannerText.innerHTML = '<strong>Dual-Stack Network Detected</strong> - Working public connectivity over both IPv4 and IPv6.';
         } else if (state.isProbing || state.ipv4Status === 'checking' || state.ipv6Status === 'checking') {
           banner.className = 'dual-stack-banner';
           bannerIcon.textContent = '…';
-          bannerText.innerHTML = '<strong>Testing Dual-Stack Reachability</strong> &mdash; Probing alternate IP stack from your browser&hellip;';
+          bannerText.innerHTML = '<strong>Testing Dual-Stack Reachability</strong> - Probing alternate IP stack from your browser...';
         } else if (v4Ok && state.ipv6Status === 'unavailable') {
           banner.className = 'dual-stack-banner';
           bannerIcon.textContent = '•';
-          bannerText.innerHTML = '<strong>IPv4 Only Network</strong> &mdash; Connected over IPv4; no public IPv6 route detected for this client.';
+          bannerText.innerHTML = '<strong>IPv4 Only Network</strong> - Connected over IPv4; no public IPv6 route detected.';
         } else if (v6Ok && state.ipv4Status === 'unavailable') {
           banner.className = 'dual-stack-banner';
           bannerIcon.textContent = '•';
-          bannerText.innerHTML = '<strong>IPv6 Only Network</strong> &mdash; Connected over IPv6; no public IPv4 route detected for this client.';
+          bannerText.innerHTML = '<strong>IPv6 Only Network</strong> - Connected over IPv6; no public IPv4 route detected.';
         } else if (!v4Ok && !v6Ok) {
           banner.className = 'dual-stack-banner';
           bannerIcon.textContent = '•';
-          bannerText.innerHTML = '<strong>No Public Route Detected</strong> &mdash; Unable to reach public IPv4 or IPv6 endpoints from this client.';
+          bannerText.innerHTML = '<strong>No Public Route Detected</strong> - Unable to reach public IPv4 or IPv6 endpoints.';
         } else {
           banner.className = 'dual-stack-banner';
           bannerIcon.textContent = '•';
-          bannerText.innerHTML = '<strong>Single Stack Active</strong> &mdash; Network connectivity detected.';
+          bannerText.innerHTML = '<strong>Single Stack Active</strong> - Network connectivity detected.';
         }
       }
 

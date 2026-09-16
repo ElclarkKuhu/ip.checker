@@ -1,35 +1,47 @@
-# org.elclark.id — Elclark Origin
+# Elclark Origin
 
-Ultra-fast, lightweight, zero-framework, privacy-first IP and dual-stack IPv4/IPv6 diagnostics running on the Cloudflare edge.
+Lightweight IP and dual-stack IPv4/IPv6 diagnostics on Cloudflare Workers.
 
-**Primary Domain:** `https://org.elclark.id`  
-**Branding:** Elclark Origin
+**Access:** `https://org.elclark.id`
 
-## Highlights
+## Features
 
-- **Zero Framework & Zero Runtime Bloat**: Pure vanilla HTML, CSS, and modern JavaScript.
-- **Edge SSR**: Renders connected client IP and protocol directly in initial HTML response from `CF-Connecting-IP` edge headers — zero layout shift and 0ms loading delay for primary IP.
-- **CLI & Automation Ready**: Automatic detection of terminal clients (`curl`, `wget`, `httpie`, `irm` Windows PowerShell 5.1/pwsh 7, python, go, etc.) returning clean plain-text IP with trailing newline.
-  - `curl org.elclark.id` / `irm org.elclark.id`
-- **Dual-Stack Reachability Probing**: Client-side background probe tests alternate stack reachability (`icanhazip.com` and `ident.me`) bounded by a strict 3500ms cumulative deadline with fallback.
-- **Public JSON API**: Dedicated `/api` endpoint or `?format=json` with full CORS headers (`Access-Control-Allow-Origin: *`).
-- **Privacy First (Zero Logging)**: Ephemeral in-memory resolution, strict `Cache-Control: no-store`, no database, no analytics scripts, no cookies, no tracking fingerprinting.
+- **Edge SSR:** Connected client IP rendered directly in the initial HTML response using `CF-Connecting-IP`.
+- **CLI & Automation:** Returns clean plain-text IP for terminal clients (`curl`, `wget`, `httpie`, PowerShell `irm`, Python, etc.).
+- **Dual-Stack Reachability:** Client-side background probing for alternate stack reachability (`icanhazip.com` and `ident.me`).
+- **JSON API:** Dedicated `/api` endpoint or `?format=json` with CORS enabled (`Access-Control-Allow-Origin: *`).
+- **Stateless:** Ephemeral in-memory resolution, `Cache-Control: no-store`, zero logging, no database, no cookies, no tracking.
+
+## Usage
+
+```bash
+# Plain text IP
+curl org.elclark.id
+# or Windows PowerShell:
+irm org.elclark.id
+
+# JSON response
+curl org.elclark.id/api
+
+# Force IPv4 / IPv6
+curl -4 org.elclark.id
+curl -6 org.elclark.id
+```
 
 ## Project Structure
 
 ```
 org.elclark.id/
-├── wrangler.json      # Cloudflare Workers configuration (route: org.elclark.id)
+├── wrangler.json      # Cloudflare Workers configuration
 ├── server.js          # Lightweight Node.js server for local preview & testing
-├── package.json       # Project metadata & npm test/typecheck/deploy scripts
-├── jsconfig.json      # Strict JSDoc / TypeScript compiler configuration
-├── tsconfig.json      # TypeScript runner compatibility config
+├── package.json       # Project metadata & scripts
+├── tsconfig.json      # TypeScript typecheck configuration
 ├── src/
-│   ├── index.js       # Cloudflare Worker fetch handler (CORS, content negotiation, routes)
-│   ├── ip.js          # Pure isomorphic IP parsing, validation, and classification
+│   ├── index.js       # Cloudflare Worker fetch handler
+│   ├── ip.js          # IP parsing, validation, and classification
 │   ├── cli.js         # CLI user-agent detection & content negotiation
 │   ├── probe.js       # Dual-stack probing logic with timeout and fallback
-│   └── html.js        # Responsive minimalist zero-framework web UI generator
+│   └── html.js        # Responsive zero-framework web UI generator
 └── test/
     ├── unit.test.js   # Unit tests for IP validation and CLI detection
     ├── probe.test.js  # Unit tests for probe lifecycle and abort deadlines
