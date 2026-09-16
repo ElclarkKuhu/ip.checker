@@ -317,43 +317,52 @@ export function renderHtml({ ip, version }) {
       flex-shrink: 0;
     }
 
-    /* Dual Stack Status Banner */
+    /* Hero Dual Stack Status Footer */
     .dual-stack-banner {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 0.85rem 1.25rem;
-      margin-bottom: 1.5rem;
+      margin-top: 1.25rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border-subtle);
       display: flex;
       align-items: center;
-      gap: 0.85rem;
-      font-size: 0.875rem;
+      gap: 0.75rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
       transition: all 0.2s ease;
     }
 
+    .dual-stack-banner strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
     .dual-stack-banner.active {
-      border-color: rgba(16, 185, 129, 0.35);
-      background: linear-gradient(90deg, rgba(16, 185, 129, 0.08) 0%, rgba(16, 185, 129, 0.02) 100%);
+      color: var(--text-muted);
+    }
+
+    .dual-stack-banner.active strong {
+      color: var(--text);
     }
 
     .banner-icon {
-      font-size: 0.85rem;
+      font-size: 0.75rem;
       line-height: 1;
-      width: 22px;
-      height: 22px;
+      width: 20px;
+      height: 20px;
       border-radius: 50%;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       background: var(--bg-card-subtle);
       border: 1px solid var(--border);
+      color: var(--text-dim);
       flex-shrink: 0;
     }
 
     .dual-stack-banner.active .banner-icon {
       background: var(--accent-ipv4-bg);
-      border-color: rgba(16, 185, 129, 0.3);
+      border-color: rgba(16, 185, 129, 0.35);
       color: var(--accent-ipv4);
+      font-weight: 700;
     }
 
     /* Stack Breakdown Grid */
@@ -706,6 +715,12 @@ export function renderHtml({ ip, version }) {
         width: 100%;
         justify-content: center;
       }
+      .dual-stack-banner {
+        margin-top: 1rem;
+        padding-top: 0.85rem;
+        font-size: 0.8rem;
+        gap: 0.6rem;
+      }
     }
 
     @media (max-width: 440px) {
@@ -758,15 +773,15 @@ export function renderHtml({ ip, version }) {
           <span id="copy-primary-text">Copy IP</span>
         </button>
       </div>
-    </section>
 
-    <!-- Dual Stack Status Banner -->
-    <div id="dual-stack-banner" class="dual-stack-banner" role="status">
-      <span id="banner-icon" class="banner-icon">&bull;</span>
-      <span id="banner-text">
-        <strong>Testing Dual-Stack Reachability</strong> - Probing alternate IP stack from your browser...
-      </span>
-    </div>
+      <!-- Dual Stack Status Footer -->
+      <div id="dual-stack-banner" class="dual-stack-banner" role="status">
+        <span id="banner-icon" class="banner-icon">&bull;</span>
+        <span id="banner-text">
+          <strong>Testing Dual-Stack Reachability</strong> - Probing alternate IP stack from your browser...
+        </span>
+      </div>
+    </section>
 
     <!-- Dual Stack Breakdown (IPv4 & IPv6 Cards) -->
     <div class="stack-grid">
