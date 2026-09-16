@@ -48,7 +48,8 @@ export function renderHtml({ ip, version }) {
   <meta name="twitter:title" content="What is my IP Address? - Elclark Origin">
   <meta name="twitter:description" content="Elclark Origin - Inspect your public IP address and verify IPv4 and IPv6 dual-stack reachability. Zero-logging, tracker-free.">
   <link rel="canonical" href="https://org.elclark.id">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌐</text></svg>">
+  <link rel="icon" type="image/png" href="https://elclark.id/favicon.png">
+  <link rel="alternate icon" href="https://elclark.id/favicon.ico">
   <style>
     :root {
       --bg: #090b0e;
@@ -172,8 +173,18 @@ export function renderHtml({ ip, version }) {
       width: 8px;
       height: 8px;
       border-radius: 50%;
+      display: inline-block;
+      flex-shrink: 0;
+    }
+
+    .status-pulse.ipv4 {
       background: var(--accent-ipv4);
-      box-shadow: 0 0 8px var(--accent-ipv4);
+      box-shadow: 0 0 10px rgba(16, 185, 129, 0.6);
+    }
+
+    .status-pulse.ipv6 {
+      background: var(--accent-ipv6);
+      box-shadow: 0 0 10px rgba(99, 102, 241, 0.6);
     }
 
     .meta-label {
@@ -255,70 +266,99 @@ export function renderHtml({ ip, version }) {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 1rem;
+      gap: 1.25rem;
       flex-wrap: wrap;
     }
 
     .primary-ip-display {
       font-family: var(--font-mono);
-      font-size: clamp(1.4rem, 4vw, 2.25rem);
+      font-size: clamp(1.2rem, 3.2vw, 1.85rem);
       font-weight: 700;
-      letter-spacing: -0.02em;
+      letter-spacing: -0.025em;
       color: var(--text);
       word-break: break-all;
+      line-height: 1.25;
     }
 
     .btn-copy {
       background: #2563eb;
       color: #fff;
       border: none;
-      padding: 0.6rem 1.25rem;
-      border-radius: 6px;
+      padding: 0.55rem 1.15rem;
+      border-radius: 7px;
       font-family: var(--font-sans);
       font-size: 0.875rem;
       font-weight: 600;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 0.4rem;
-      transition: background-color 0.15s;
+      gap: 0.45rem;
+      white-space: nowrap;
+      flex-shrink: 0;
+      transition: background-color 0.15s, transform 0.1s;
     }
 
     .btn-copy:hover {
       background: #1d4ed8;
     }
 
+    .btn-copy:active {
+      transform: scale(0.98);
+    }
+
     .btn-copy.copied {
       background: #059669;
+    }
+
+    .btn-copy-icon {
+      width: 15px;
+      height: 15px;
+      flex-shrink: 0;
     }
 
     /* Dual Stack Status Banner */
     .dual-stack-banner {
       background: var(--bg-card);
       border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 1rem 1.25rem;
+      border-radius: 10px;
+      padding: 0.85rem 1.25rem;
       margin-bottom: 1.5rem;
       display: flex;
       align-items: center;
       gap: 0.85rem;
-      font-size: 0.9rem;
+      font-size: 0.875rem;
+      transition: all 0.2s ease;
     }
 
     .dual-stack-banner.active {
       border-color: rgba(16, 185, 129, 0.35);
-      background: rgba(16, 185, 129, 0.04);
+      background: linear-gradient(90deg, rgba(16, 185, 129, 0.08) 0%, rgba(16, 185, 129, 0.02) 100%);
     }
 
     .banner-icon {
-      font-size: 1.1rem;
+      font-size: 0.85rem;
       line-height: 1;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg-card-subtle);
+      border: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    .dual-stack-banner.active .banner-icon {
+      background: var(--accent-ipv4-bg);
+      border-color: rgba(16, 185, 129, 0.3);
+      color: var(--accent-ipv4);
     }
 
     /* Stack Breakdown Grid */
     .stack-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 1.25rem;
       margin-bottom: 2.5rem;
     }
@@ -327,16 +367,21 @@ export function renderHtml({ ip, version }) {
       background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: 10px;
-      padding: 1.25rem;
+      padding: 1.15rem 1.25rem;
       display: flex;
       flex-direction: column;
+      transition: border-color 0.15s ease;
+    }
+
+    .stack-card:hover {
+      border-color: #2b3547;
     }
 
     .card-top {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 1rem;
+      margin-bottom: 0.85rem;
       padding-bottom: 0.75rem;
       border-bottom: 1px solid var(--border-subtle);
     }
@@ -349,10 +394,11 @@ export function renderHtml({ ip, version }) {
 
     .pill {
       font-family: var(--font-mono);
-      font-size: 0.7rem;
+      font-size: 0.725rem;
       font-weight: 700;
-      padding: 0.15rem 0.5rem;
+      padding: 0.2rem 0.55rem;
       border-radius: 4px;
+      letter-spacing: 0.02em;
     }
 
     .pill.ipv4 {
@@ -365,17 +411,11 @@ export function renderHtml({ ip, version }) {
       color: var(--accent-ipv6);
     }
 
-    .card-label {
-      font-size: 0.8rem;
-      color: var(--text-dim);
-      font-family: var(--font-mono);
-    }
-
     .status-tag {
       font-family: var(--font-mono);
       font-size: 0.75rem;
       font-weight: 600;
-      padding: 0.2rem 0.5rem;
+      padding: 0.2rem 0.55rem;
       border-radius: 4px;
     }
 
@@ -401,7 +441,7 @@ export function renderHtml({ ip, version }) {
 
     .card-content {
       flex: 1;
-      min-height: 3rem;
+      min-height: 2.75rem;
       display: flex;
       align-items: center;
     }
@@ -411,34 +451,39 @@ export function renderHtml({ ip, version }) {
       align-items: center;
       justify-content: space-between;
       width: 100%;
-      gap: 0.5rem;
+      gap: 0.75rem;
     }
 
     .ip-text {
       font-family: var(--font-mono);
-      font-size: 0.95rem;
+      font-size: clamp(0.76rem, 1.35vw, 0.835rem);
       font-weight: 600;
+      letter-spacing: -0.025em;
       color: var(--text);
       word-break: break-all;
+      line-height: 1.35;
     }
 
     .btn-icon-copy {
       background: var(--bg-card-subtle);
       border: 1px solid var(--border);
       color: var(--text-muted);
-      border-radius: 4px;
-      padding: 0.35rem 0.5rem;
+      border-radius: 6px;
+      width: 30px;
+      height: 30px;
+      padding: 0;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      transition: all 0.15s;
+      flex-shrink: 0;
+      transition: all 0.15s ease;
     }
 
     .btn-icon-copy:hover {
       background: #1c212c;
       color: var(--text);
-      border-color: #333a4c;
+      border-color: #384256;
     }
 
     .btn-icon-copy svg {
@@ -652,7 +697,7 @@ export function renderHtml({ ip, version }) {
     <section class="hero-card" aria-label="Connected IP Information">
       <div class="hero-header">
         <div class="hero-meta">
-          <span class="status-pulse" aria-hidden="true"></span>
+          <span id="hero-pulse" class="status-pulse ${version.toLowerCase()}" aria-hidden="true"></span>
           <span class="meta-label">Currently Connected Via</span>
           <span id="hero-protocol-badge" class="protocol-badge ${version.toLowerCase()}">${version}</span>
           <span id="local-badge" class="local-badge"${isLocal ? '' : ' style="display: none;"'}>Local / Dev</span>
@@ -670,6 +715,10 @@ export function renderHtml({ ip, version }) {
           <span id="primary-ip">${safeIp}</span>
         </div>
         <button type="button" id="btn-copy-primary" class="btn-copy" aria-label="Copy connected IP address">
+          <svg class="btn-copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+          </svg>
           <span id="copy-primary-text">Copy IP</span>
         </button>
       </div>
@@ -690,7 +739,6 @@ export function renderHtml({ ip, version }) {
         <div class="card-top">
           <div class="card-title">
             <span class="pill ipv4">IPv4</span>
-            <span class="card-label">Internet Protocol v4</span>
           </div>
           <div id="v4-status-tag" class="status-tag status-${v4Status}">
             ${v4Status === 'connected' ? 'Connected' : 'Checking&hellip;'}
@@ -722,7 +770,6 @@ export function renderHtml({ ip, version }) {
         <div class="card-top">
           <div class="card-title">
             <span class="pill ipv6">IPv6</span>
-            <span class="card-label">Internet Protocol v6</span>
           </div>
           <div id="v6-status-tag" class="status-tag status-${v6Status}">
             ${v6Status === 'connected' ? 'Connected' : 'Checking&hellip;'}
@@ -1103,6 +1150,10 @@ export function renderHtml({ ip, version }) {
               if (badge) {
                 badge.className = 'protocol-badge ' + data.version.toLowerCase();
                 badge.textContent = data.version;
+              }
+              var pulse = document.getElementById('hero-pulse');
+              if (pulse) {
+                pulse.className = 'status-pulse ' + data.version.toLowerCase();
               }
               var localBadge = document.getElementById('local-badge');
               if (localBadge && localBadge.style) {
