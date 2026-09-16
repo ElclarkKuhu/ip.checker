@@ -399,4 +399,57 @@ function createSandbox(initialFetch = async () => ({ ok: true, text: async () =>
 	console.log('✔ isPrivateIp and refresh() with local IP handled correctly in sandbox');
 }
 
+// 10. Test refresh() rechecks BOTH IPv4 and IPv6 stacks
+{
+	const calledUrls = [];
+	const { sandbox, getEl } = createSandbox(async (url) => {
+		calledUrls.push(url);
+		if (url === '/api') {
+			return {
+				ok: true,
+				json: async () => ({ ip: '203.0.113.50', version: 'IPv4', ipv4: '203.0.113.50', ipv6: null })
+			};
+		}
+		if (url && (url.includes('ipv4') || url.includes('v4'))) {
+			return { ok: true, text: async () => '203.0.113.50' };
+		}
+		return { ok: true, text: async () => '2606:4700:4700::1234' };
+	});
+
+	const exposeCode = scriptCode
+		.replace('var state = {', 'window.state = state = {')
+		.replace('async function refresh', 'window.refresh = refresh; async function refresh');
+
+	const context = vm.createContext(sandbox);
+	vm.runInContext(exposeCode, context);
+
+	// Clear URLs from initial load
+	calledUrls.length = 0;
+
+	// Trigger Re-check
+	await sandbox.window.refresh();
+
+	const hasApi = calledUrls.some((u) => u === '/api');
+	const hasV4 = calledUrls.some((u) => u && (u.includes('ipv4') || u.includes('v4')));
+	const hasV6 = calledUrls.some((u) => u && (u.includes('ipv6') || u.includes('v6')));
+
+	assert.ok(hasApi, 'refresh() must fetch /api');
+	assert.ok(hasV4, 'refresh() must probe IPv4 stack even when already connected via IPv4');
+	assert.ok(hasV6, 'refresh() must probe IPv6 stack');
+
+	assert.equal(sandbox.window.state.connectedIp, '203.0.113.50', 'state.connectedIp must refresh to new IP');
+	assert.equal(getEl('primary-ip').textContent, '203.0.113.50', 'primary-ip element must display new IP');
+
+	// Verify copying primary IP copies the updated IP
+	let copiedText = null;
+	sandbox.navigator.clipboard.writeText = async (txt) => {
+		copiedText = txt;
+	};
+	getEl('btn-copy-primary').click();
+	assert.equal(copiedText, '203.0.113.50', 'btn-copy-primary must copy refreshed connected IP');
+
+	console.log('✔ refresh() rechecks both IPv4 and IPv6 stacks and updates changed connected IP');
+}
+
 console.log('All Client Script & Sandbox Tests passed successfully!');
+

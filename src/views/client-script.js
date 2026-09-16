@@ -160,7 +160,7 @@ export function renderClientScript({
         }
       }
 
-      async function runProbes(controller) {
+      async function runProbes(controller, checkBoth, apiPromise) {
         var signal = controller.signal;
         state.isProbing = true;
         var btnRefresh = document.getElementById('btn-refresh');
@@ -173,13 +173,29 @@ export function renderClientScript({
 
         try {
           var promises = [];
-          // Probe IPv4 if not already connected via IPv4
-          if (state.version !== 'IPv4' || state.isLocal) {
+          var shouldProbeV4 = checkBoth || state.version !== 'IPv4' || state.isLocal;
+          var shouldProbeV6 = checkBoth || state.version !== 'IPv6' || state.isLocal;
+
+          // Probe IPv4
+          if (shouldProbeV4) {
+            state.ipv4Status = 'checking';
             updateStackCard('v4', 'checking');
             promises.push(
-              probeStack(IPV4_ENDPOINTS, isValidIpv4, 3500, signal).then(function(res) {
+              probeStack(IPV4_ENDPOINTS, isValidIpv4, 3500, signal).then(async function(res) {
                 if (signal.aborted) return;
-                if (res) {
+                var apiData = null;
+                if (apiPromise) {
+                  try { apiData = await apiPromise; } catch(e) {}
+                }
+                if (signal.aborted) return;
+                var isConnected = apiPromise
+                  ? Boolean(apiData && apiData.ip && state.version === 'IPv4' && !state.isLocal)
+                  : (state.version === 'IPv4' && !state.isLocal);
+                if (isConnected) {
+                  state.probedIpv4 = state.connectedIp;
+                  state.ipv4Status = 'connected';
+                  updateStackCard('v4', 'connected', state.connectedIp);
+                } else if (res) {
                   state.probedIpv4 = res;
                   state.ipv4Status = 'detected';
                   updateStackCard('v4', 'detected', res);
@@ -193,13 +209,26 @@ export function renderClientScript({
             );
           }
 
-          // Probe IPv6 if not already connected via IPv6
-          if (state.version !== 'IPv6' || state.isLocal) {
+          // Probe IPv6
+          if (shouldProbeV6) {
+            state.ipv6Status = 'checking';
             updateStackCard('v6', 'checking');
             promises.push(
-              probeStack(IPV6_ENDPOINTS, isValidIpv6, 3500, signal).then(function(res) {
+              probeStack(IPV6_ENDPOINTS, isValidIpv6, 3500, signal).then(async function(res) {
                 if (signal.aborted) return;
-                if (res) {
+                var apiData = null;
+                if (apiPromise) {
+                  try { apiData = await apiPromise; } catch(e) {}
+                }
+                if (signal.aborted) return;
+                var isConnected = apiPromise
+                  ? Boolean(apiData && apiData.ip && state.version === 'IPv6' && !state.isLocal)
+                  : (state.version === 'IPv6' && !state.isLocal);
+                if (isConnected) {
+                  state.probedIpv6 = state.connectedIp;
+                  state.ipv6Status = 'connected';
+                  updateStackCard('v6', 'connected', state.connectedIp);
+                } else if (res) {
                   state.probedIpv6 = res;
                   state.ipv6Status = 'detected';
                   updateStackCard('v6', 'detected', res);
@@ -241,62 +270,51 @@ export function renderClientScript({
         if (refreshLabel) refreshLabel.textContent = 'Checking...';
 
         try {
-          var res = await fetch('/api', {
-            headers: { Accept: 'application/json' },
-            cache: 'no-store',
-            signal: signal
-          });
-          if (signal.aborted) return;
-          if (res.ok) {
-            var data = await res.json();
-            if (data && data.ip) {
-              state.connectedIp = data.ip;
-              state.version = data.version;
-              var isV4 = data.version === 'IPv4';
-              state.isLocal = isPrivateIp(data.ip);
-              var primaryIpEl = document.getElementById('primary-ip');
-              if (primaryIpEl) primaryIpEl.textContent = data.ip;
-              var badge = document.getElementById('hero-protocol-badge');
-              if (badge) {
-                badge.className = 'protocol-badge ' + data.version.toLowerCase();
-                badge.textContent = data.version;
+          var apiPromise = (async function() {
+            try {
+              var res = await fetch('/api', {
+                headers: { Accept: 'application/json' },
+                cache: 'no-store',
+                signal: signal
+              });
+              if (signal.aborted) return null;
+              if (res && res.ok) {
+                var data = await res.json();
+                if (data && data.ip) {
+                  state.connectedIp = data.ip;
+                  state.version = data.version;
+                  state.isLocal = isPrivateIp(data.ip);
+                  var primaryIpEl = document.getElementById('primary-ip');
+                  if (primaryIpEl) primaryIpEl.textContent = data.ip;
+                  var badge = document.getElementById('hero-protocol-badge');
+                  if (badge) {
+                    badge.className = 'protocol-badge ' + data.version.toLowerCase();
+                    badge.textContent = data.version;
+                  }
+                  var pulse = document.getElementById('hero-pulse');
+                  if (pulse) {
+                    pulse.className = 'status-pulse ' + data.version.toLowerCase();
+                  }
+                  var localBadge = document.getElementById('local-badge');
+                  if (localBadge && localBadge.style) {
+                    localBadge.style.display = state.isLocal ? 'inline-block' : 'none';
+                  }
+                  return data;
+                }
               }
-              var pulse = document.getElementById('hero-pulse');
-              if (pulse) {
-                pulse.className = 'status-pulse ' + data.version.toLowerCase();
-              }
-              var localBadge = document.getElementById('local-badge');
-              if (localBadge && localBadge.style) {
-                localBadge.style.display = state.isLocal ? 'inline-block' : 'none';
-              }
+            } catch(e) {}
+            return null;
+          })();
 
-              if (isV4 && !state.isLocal) {
-                state.ipv4Status = 'connected';
-                state.probedIpv4 = data.ip;
-                updateStackCard('v4', 'connected', data.ip);
-                state.ipv6Status = 'checking';
-                updateStackCard('v6', 'checking');
-              } else if (!isV4 && !state.isLocal) {
-                state.ipv6Status = 'connected';
-                state.probedIpv6 = data.ip;
-                updateStackCard('v6', 'connected', data.ip);
-                state.ipv4Status = 'checking';
-                updateStackCard('v4', 'checking');
-              } else {
-                state.ipv4Status = 'checking';
-                state.ipv6Status = 'checking';
-                updateStackCard('v4', 'checking');
-                updateStackCard('v6', 'checking');
-              }
-            }
-          }
-          await runProbes(activeController);
+          await runProbes(activeController, true, apiPromise);
         } catch(e) {
           // Network error or aborted
         } finally {
-          if (btnRefresh) btnRefresh.disabled = false;
-          if (refreshIcon) refreshIcon.classList.remove('spinning');
-          if (refreshLabel) refreshLabel.textContent = 'Re-check';
+          if (activeController === null || activeController.signal === signal) {
+            if (btnRefresh) btnRefresh.disabled = false;
+            if (refreshIcon) refreshIcon.classList.remove('spinning');
+            if (refreshLabel) refreshLabel.textContent = 'Re-check';
+          }
         }
       }
 
