@@ -1,0 +1,14 @@
+{
+  "name": "org-elclark-id",
+  "main": "src/index.js",
+  "compatibility_date": "2024-09-23",
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
+  "routes": [
+    {
+      "pattern": "org.elclark.id",
+      "custom_domain": true
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "name": "org.elclark.id",
+  "version": "1.0.0",
+  "description": "Ultra-fast, zero-framework, privacy-first IP and dual-stack IPv4/IPv6 diagnostics on the edge — Elclark Origin",
+  "type": "module",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "test": "node test/unit.test.js && node test/probe.test.js && node test/client.test.js && node test/server.test.js",
+    "typecheck": "tsc --noEmit",
+    "deploy": "wrangler deploy"
+  },
+  "keywords": [
+    "ip",
+    "ipv4",
+    "ipv6",
+    "dual-stack",
+    "cloudflare-worker",
+    "vanilla-js"
+  ],
+  "author": "Elclark Kuhu",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^22.20.3",
+    "typescript": "^7.0.2"
+  }
+}
