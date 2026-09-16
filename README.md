@@ -1,4 +1,4 @@
-# Elclark Origin
+# Origin
 
 Lightweight IP and dual-stack IPv4/IPv6 diagnostics on Cloudflare Workers.
 

@@ -1,7 +1,7 @@
 {
   "name": "org.elclark.id",
   "version": "1.0.0",
-  "description": "IP and dual-stack IPv4/IPv6 diagnostics on Cloudflare Workers - Elclark Origin",
+  "description": "IP and dual-stack IPv4/IPv6 diagnostics on Cloudflare Workers - Origin",
   "type": "module",
   "main": "src/index.js",
   "scripts": {
@@ -19,7 +19,7 @@
     "cloudflare-worker",
     "vanilla-js"
   ],
-  "author": "Elclark Kuhu",
+  "author": "Elclark",
   "license": "MIT",
   "devDependencies": {
     "@types/node": "^22.20.3",

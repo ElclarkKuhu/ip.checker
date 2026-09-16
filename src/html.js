@@ -39,14 +39,14 @@ export function renderHtml({ ip, version }) {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>What is my IP Address? - Elclark Origin</title>
-  <meta name="description" content="Elclark Origin - Lightweight IP and dual-stack IPv4/IPv6 diagnostics on the edge.">
-  <meta property="og:title" content="What is my IP Address? - Elclark Origin">
-  <meta property="og:description" content="Elclark Origin - Inspect your public IP address and verify IPv4 and IPv6 dual-stack reachability. Zero-logging, tracker-free.">
+  <title>What is my IP Address? - Origin</title>
+  <meta name="description" content="Origin - Lightweight IP and dual-stack IPv4/IPv6 diagnostics on the edge.">
+  <meta property="og:title" content="What is my IP Address? - Origin">
+  <meta property="og:description" content="Origin - Inspect your public IP address and verify IPv4 and IPv6 dual-stack reachability. Zero-logging, tracker-free.">
   <meta property="og:url" content="https://org.elclark.id">
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="What is my IP Address? - Elclark Origin">
-  <meta name="twitter:description" content="Elclark Origin - Inspect your public IP address and verify IPv4 and IPv6 dual-stack reachability. Zero-logging, tracker-free.">
+  <meta name="twitter:title" content="What is my IP Address? - Origin">
+  <meta name="twitter:description" content="Origin - Inspect your public IP address and verify IPv4 and IPv6 dual-stack reachability. Zero-logging, tracker-free.">
   <link rel="canonical" href="https://org.elclark.id">
   <link rel="icon" type="image/png" href="https://elclark.id/favicon.png">
   <link rel="alternate icon" href="https://elclark.id/favicon.ico">
@@ -736,12 +736,12 @@ export function renderHtml({ ip, version }) {
       <a href="https://elclark.id" class="brand">
         <span>&larr; elclark.id</span>
       </a>
-      <span class="brand-tag">Elclark Origin</span>
+      <span class="brand-tag">Origin</span>
     </div>
 
     <header>
       <h1 class="page-title">What is my IP Address?</h1>
-      <p class="page-subtitle">Elclark Origin - Lightweight, zero-logging network diagnostics running at the Cloudflare edge.</p>
+      <p class="page-subtitle">Origin - Lightweight, zero-logging network diagnostics running at the Cloudflare edge.</p>
     </header>
 
     <!-- Primary Connected IP Hero Card -->
@@ -964,7 +964,7 @@ export function renderHtml({ ip, version }) {
   </div>
 
   <footer>
-    <p>Elclark Origin &middot; by <a href="https://elclark.id">Elclark Kuhu</a> &middot; Powered by Cloudflare Edge &middot; <a href="#notes-heading">Diagnostics &amp; Notes</a></p>
+    <p>Origin By <a href="https://elclark.id">Elclark</a> &middot; Powered by Cloudflare Edge &middot; <a href="#notes-heading">Diagnostics &amp; Notes</a></p>
   </footer>
 
   <script>
