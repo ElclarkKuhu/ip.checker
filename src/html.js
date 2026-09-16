@@ -90,9 +90,9 @@ export function renderHtml({ ip, version }) {
     }
 
     .container {
-      max-width: 54rem;
+      max-width: 64rem;
       margin: 0 auto;
-      padding: 2.5rem 1.25rem 4rem;
+      padding: 3rem 1.5rem 5rem;
       width: 100%;
       flex: 1;
     }
