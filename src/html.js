@@ -964,7 +964,7 @@ export function renderHtml({ ip, version }) {
   </div>
 
   <footer>
-    <p>Origin By <a href="https://elclark.id">Elclark</a> &middot; Powered by Cloudflare Edge &middot; <a href="#notes-heading">Diagnostics &amp; Notes</a></p>
+    <p>Origin By <a href="https://elclark.id">Elclark</a> &middot; Powered by Cloudflare Edge</p>
   </footer>
 
   <script>
