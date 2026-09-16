@@ -71,3 +71,14 @@ This project is deployed to **Cloudflare Workers** with custom domain routing co
 npm run deploy
 # or: npx wrangler deploy
 ```
+
+## Credits & Acknowledgements
+
+- **[Cloudflare Workers](https://workers.cloudflare.com/)** — Edge serverless runtime providing global execution and `CF-Connecting-IP` resolution.
+- **[icanhazip.com](https://icanhazip.com/)** — Single-stack public IP echo service operated on Cloudflare infrastructure by Major Hayden, utilized for browser dual-stack reachability probing.
+- **Vanilla Web Platform** — Zero runtime dependencies, built entirely with standard Web APIs (`fetch`, `Request`, `Response`).
+
+## License
+
+This project is open source and available under the [MIT License](LICENSE).
+Copyright (c) 2026 [Elclark](https://elclark.id).

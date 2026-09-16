@@ -21,6 +21,14 @@
   ],
   "author": "Elclark",
   "license": "MIT",
+  "homepage": "https://org.elclark.id",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ElclarkKuhu/ip.checker.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ElclarkKuhu/ip.checker/issues"
+  },
   "devDependencies": {
     "@types/node": "^22.20.3",
     "typescript": "^7.0.2"
