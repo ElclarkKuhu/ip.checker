@@ -276,7 +276,8 @@ export function renderHtml({ ip, version }) {
       font-weight: 700;
       letter-spacing: -0.025em;
       color: var(--text);
-      word-break: break-all;
+      overflow-wrap: anywhere;
+      word-break: normal;
       line-height: 1.25;
     }
 
@@ -367,7 +368,7 @@ export function renderHtml({ ip, version }) {
       background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: 10px;
-      padding: 1.15rem 1.25rem;
+      padding: 0.95rem 1.15rem;
       display: flex;
       flex-direction: column;
       transition: border-color 0.15s ease;
@@ -381,8 +382,8 @@ export function renderHtml({ ip, version }) {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 0.85rem;
-      padding-bottom: 0.75rem;
+      margin-bottom: 0.65rem;
+      padding-bottom: 0.55rem;
       border-bottom: 1px solid var(--border-subtle);
     }
 
@@ -441,7 +442,7 @@ export function renderHtml({ ip, version }) {
 
     .card-content {
       flex: 1;
-      min-height: 2.75rem;
+      min-height: 2.25rem;
       display: flex;
       align-items: center;
     }
@@ -456,12 +457,13 @@ export function renderHtml({ ip, version }) {
 
     .ip-text {
       font-family: var(--font-mono);
-      font-size: clamp(0.76rem, 1.35vw, 0.835rem);
-      font-weight: 600;
-      letter-spacing: -0.025em;
+      font-size: clamp(0.95rem, 1.35vw, 1.08rem);
+      font-weight: 650;
+      letter-spacing: -0.02em;
       color: var(--text);
-      word-break: break-all;
-      line-height: 1.35;
+      overflow-wrap: anywhere;
+      word-break: normal;
+      line-height: 1.3;
     }
 
     .btn-icon-copy {
@@ -469,8 +471,8 @@ export function renderHtml({ ip, version }) {
       border: 1px solid var(--border);
       color: var(--text-muted);
       border-radius: 6px;
-      width: 30px;
-      height: 30px;
+      width: 32px;
+      height: 32px;
       padding: 0;
       cursor: pointer;
       display: inline-flex;
@@ -663,18 +665,52 @@ export function renderHtml({ ip, version }) {
 
     @media (max-width: 640px) {
       .container {
-        padding: 1.5rem 1rem 3rem;
+        padding: 1.25rem 0.85rem 3rem;
+      }
+      .page-title {
+        font-size: clamp(1.4rem, 5.5vw, 1.85rem);
+      }
+      .page-subtitle {
+        font-size: 0.85rem;
+        margin-bottom: 1.5rem;
       }
       .hero-card {
-        padding: 1.25rem;
+        padding: 1.15rem;
+      }
+      .hero-header {
+        flex-wrap: nowrap;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+        padding-bottom: 0.75rem;
+      }
+      .hero-meta {
+        flex-wrap: nowrap;
+        font-size: 0.8rem;
+        gap: 0.45rem;
+        min-width: 0;
+      }
+      .meta-label {
+        white-space: nowrap;
+      }
+      .btn-refresh {
+        padding: 0.35rem 0.65rem;
+        font-size: 0.775rem;
+        flex-shrink: 0;
       }
       .hero-body {
         flex-direction: column;
         align-items: flex-start;
+        gap: 1rem;
       }
       .btn-copy {
         width: 100%;
         justify-content: center;
+      }
+    }
+
+    @media (max-width: 440px) {
+      .meta-adv {
+        display: none;
       }
     }
   </style>
@@ -698,7 +734,7 @@ export function renderHtml({ ip, version }) {
       <div class="hero-header">
         <div class="hero-meta">
           <span id="hero-pulse" class="status-pulse ${version.toLowerCase()}" aria-hidden="true"></span>
-          <span class="meta-label">Currently Connected Via</span>
+          <span class="meta-label"><span class="meta-adv">Currently </span>Connected Via</span>
           <span id="hero-protocol-badge" class="protocol-badge ${version.toLowerCase()}">${version}</span>
           <span id="local-badge" class="local-badge"${isLocal ? '' : ' style="display: none;"'}>Local / Dev</span>
         </div>
